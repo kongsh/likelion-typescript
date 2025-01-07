@@ -6,12 +6,12 @@
 // --------------------------------------------------------------------------
 
 {
-  function makeRepeatArray<T>(thing?: T, repeatCount: number = 2): T[] {
+  function makeRepeatArray<T = undefined>(thing?: T, repeatCount: number = 2): T[] {
     return Array(repeatCount).fill(thing);
   }
 
   const numberList = makeRepeatArray(101);
-  const stringList = makeRepeatArray('works');
+  const stringList = makeRepeatArray("works");
   const arrayList = makeRepeatArray([true, () => {}]);
 
   // 아무런 데이터가 전달되지 않아도 기본 타입이 설정되도록 제네릭 기본 타입을 설정합니다.

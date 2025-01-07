@@ -7,24 +7,41 @@
 // --------------------------------------------------------------------------
 
 {
+  enum FarmAnimalKind {
+    ROOSTER = "ROOSTER",
+    COW = "COW",
+    SHEEP = "SHEEP",
+    PIG = "PIG",
+  }
+
+  type AnimalSound = keyof typeof FarmAnimalKind;
+
   interface Rooster {
+    kind: FarmAnimalKind.ROOSTER;
     name: string;
     age: number;
+    crying: string;
   }
 
   interface Cow {
+    kind: FarmAnimalKind.COW;
     name: string;
     age: number;
+    sound: string;
   }
 
   interface Sheep {
+    kind: FarmAnimalKind.SHEEP;
     name: string;
     age: number;
+    crowing: string;
   }
 
   interface Pig {
+    kind: FarmAnimalKind.PIG;
     name: string;
     age: number;
+    crying: string;
   }
 
   type FarmAnimal = Rooster | Cow | Sheep | Pig;
@@ -35,22 +52,24 @@
 
   function getFarmAnimalSound(animal: FarmAnimal): string {
     switch (animal.kind) {
-      case 'PIG':
-        return '🐷 꿀꿀~';
-      case 'SHEEP':
-        return '🐏 메~ 메~';
-      case 'ROOSTER':
-        return '🐓 꼬끼오! 꼬~꼬';
-      case 'COW':
-        return '🐄 음~ 모우~';
+      case FarmAnimalKind.PIG:
+        return animal.crying;
+      case FarmAnimalKind.SHEEP:
+        return animal.crowing;
+      case FarmAnimalKind.ROOSTER:
+        return animal.crying;
+      case FarmAnimalKind.COW:
+        return animal.sound;
       default:
-        return '🚨 동물 농장에 속한 동물이 아닙니다.';
+        return "🚨 동물 농장에 속한 동물이 아닙니다.";
     }
   }
 
   const lucas: Sheep = {
-    name: '루카스',
+    kind: FarmAnimalKind.SHEEP,
+    name: "루카스",
     age: 3,
+    crowing: "🐏 메~ 메~",
   };
 
   getFarmAnimalSound(lucas);

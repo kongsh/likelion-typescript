@@ -21,9 +21,11 @@
     };
   }
 
+  const queue = createQueue([4, 5, 12]);
+
   // 사용자가 직접 제네릭 타입을 설정해야 하는 경우
-  const formElement = document.querySelector('.from');
-  formElement.addEventListener('submit', (e) => {
+  const formElement = document.querySelector<HTMLFormElement>(".from")!;
+  formElement.addEventListener("submit", (e) => {
     e.preventDefault();
   });
 }

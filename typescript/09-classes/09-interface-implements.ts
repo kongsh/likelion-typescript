@@ -18,7 +18,15 @@
     print(): void;
   }
 
-  class Cap {}
+  class Cap implements Colorful {
+    constructor(public color: string) {
+      this.color = "red";
+    }
+  }
 
-  class Printer {}
+  class Printer implements Colorful, Printable {
+    constructor(public color: string, public isPortable: boolean) {}
+
+    public print(): void {}
+  }
 }

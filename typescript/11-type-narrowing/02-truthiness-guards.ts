@@ -8,11 +8,15 @@
 
 {
   function printLetters(words?: string): void {
-    for (const letter of words) {
-      console.log(letter);
+    if (words) {
+      for (const letter of words) {
+        console.log(letter);
+      }
+    } else {
+      console.error("words가 없습니다!");
     }
   }
 
-  printLetters('진실 혹은 거짓!');
+  printLetters("진실 혹은 거짓!");
   printLetters();
 }

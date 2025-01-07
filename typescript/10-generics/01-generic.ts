@@ -9,9 +9,9 @@
 {
   // 명시적인 타입 에너테이션 (Type Annotation)
   // TypeScript 타입 추론 (Type Inference)
-  const numbers = [-2, 13, 9];
-  const colors = ['제네릭', '함수', '클래스'];
+  const numbers: Array<number | string> = [-2, 13, 9];
+  const colors: Array<string | number> = ["제네릭", "함수", "클래스"];
 
-  numbers.push('100');
+  numbers.push("100");
   colors.splice(1, 1, 100);
 }

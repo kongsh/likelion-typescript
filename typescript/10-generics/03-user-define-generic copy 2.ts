@@ -10,7 +10,7 @@
   // 집합 X의 임의의 원소 x에 대하여 f(x) = x인 함수
   // 참고: https://mathbang.net/474
 
-  function identity(item) {
+  function identity<Type>(item: Type): Type {
     return item;
   }
 
@@ -18,7 +18,7 @@
   identity(101);
 
   // string 타입
-  identity('101');
+  identity("101");
 
   type Cat = {
     name: string;
@@ -26,8 +26,8 @@
   };
 
   // Cat 타입
-  identity({
-    name: 'hamrit',
+  identity<Cat>({
+    name: "hamrit",
     breed: false,
   });
 }
@@ -45,6 +45,11 @@
 
   // 여러 타입을 사용자 설정에 따라 허용하는 getRandomItem 함수를 작성합니다.
 
-  getRandomItem(['cat', 'dog']);
-  getRandomItem([2, 3, 191, '223']);
+  function getRandomItem<Type>(list: Type[]): Type {
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  getRandomItem(["cat", "dog"]);
+  getRandomItem<number | string>([2, 3, 191, "223"]);
+  getRandomItem([[], false]);
 }

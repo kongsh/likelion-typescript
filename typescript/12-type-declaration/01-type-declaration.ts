@@ -7,7 +7,8 @@
 // - TypeScript는 선언된 타입 파일을 읽어 사용자에게 올바르게 작성하는 방법을 안내합니다.
 // ------------------------------------------------------------------------------
 
-import _ from 'lodash';
+import _ from "lodash";
+import axios, { AxiosResponse } from "axios";
 
 // axios 라이브러리를 설치한 후, 라이브러리에 선언된 타입 파일(index.d.ts)을 참고합니다.
 // TypeScript는 설치된 라이브러리 package.json 파일 types 또는 typing 항목에 연결된 타입 선언 파일을 확인합니다.
@@ -15,10 +16,21 @@ import _ from 'lodash';
 
 {
   const API = {
-    users: 'https://jsonplaceholder.typicode.com/users',
-    posts: 'https://jsonplaceholder.typicode.com/posts',
+    users: "https://jsonplaceholder.typicode.com/users",
+    posts: "https://jsonplaceholder.typicode.com/posts",
   };
 
   // axios를 사용해 사용자 또는 포스트 데이터를 비동기 요청/응답 받도록 합니다.
+  const response = await axios.get<{}, AxiosResponse<User>, {}>(API.users);
+
+  console.log(response.data.name);
+
+  const dummyUser = {
+    id: 123412,
+    name: "koko",
+  };
+
+  type User = typeof dummyUser;
+
   // axios 요청 시, 전달받을 데이터 타입을 정의하는 방법을 살펴봅니다.
 }
