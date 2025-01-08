@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { readUsers, writeUsers } from "../lib/users";
+import { isUser, readUsers, writeUsers } from "../lib/users";
 import { RequestUser, User } from "../types/user";
 
 // CREATE ----------------------------------------------------------------------------------------------------
@@ -80,7 +80,51 @@ export const readUserByIdHandler = async (req: Request, res: Response) => {
 
 // UPDATE ----------------------------------------------------------------------------------------------------
 
-export const putUserHandler = async (req: Request, res: Response) => {};
+export const putUserHandler = async (req: Request<{ id: string }, {}, RequestUser>, res: Response) => {
+  const id = Number(req.params.id);
+  const requestBody = req.body;
+
+  if (!isUser(requestBody)) {
+    res.status(400).json({
+      message: "입력하고자 하는 User의 모든 필드 데이터를 요청 본문에 포함해주세요.",
+    });
+  } else {
+    try {
+      const users = await readUsers();
+      // find user
+      const user = users.find((user) => user.id === Number(id));
+
+      if (user) {
+        // WRITE
+        const updatedUser = {
+          ...user,
+          ...requestBody,
+        };
+
+        const willUpdateUsers = users.map((user) => {
+          if (user.id === id) {
+            return updatedUser;
+          }
+          return user;
+        });
+
+        await writeUsers(willUpdateUsers);
+
+        // RESPONSE
+        res.status(200).json(updatedUser);
+      } else {
+        // RESPONSE
+        res.status(404).json({
+          message: "요청한 ID ${id} 사용자 정보를 찾을 수 없습니다..",
+        });
+      }
+    } catch (err: unknown) {
+      res.status(500).json({
+        message: "알 수 없는 오류가 발생했습니다.",
+      });
+    }
+  }
+};
 
 export const patchUserHandler = async (req: Request<{ id: string }, {}, RequestUser>, res: Response) => {
   const id = Number(req.params.id);
