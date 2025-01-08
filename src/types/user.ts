@@ -1,5 +1,5 @@
 interface User {
-  id: number | string;
+  id: number;
   name: string;
   gender: string;
   age: number;
