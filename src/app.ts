@@ -14,12 +14,16 @@ import "dotenv/config";
 import express from "express";
 import type { Express } from "express";
 import entryHandler from "./handlers/entry";
+import greetingMessage from "./middlewares/greetingMessage";
 
 const app: Express = express();
 
 const HOSTNAME = "localhost";
 const PORT = Number(process.env.PORT) ?? 4000;
 const MESSAGE = `웹 서버 구동 http://${HOSTNAME}:${PORT}`;
+
+/* Middleware ------------------------------------------------------------------- */
+app.use(greetingMessage);
 
 /* Routing ------------------------------------------------------------------- */
 
