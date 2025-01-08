@@ -81,7 +81,46 @@ export const readUserByIdHandler = async (req: Request, res: Response) => {
 // UPDATE ----------------------------------------------------------------------------------------------------
 
 export const putUserHandler = async (req: Request, res: Response) => {};
-export const patchUserHandler = async (req: Request, res: Response) => {};
+
+export const patchUserHandler = async (req: Request<{ id: string }, {}, RequestUser>, res: Response) => {
+  const id = Number(req.params.id);
+  const requestBody = req.body;
+
+  try {
+    const users = await readUsers();
+    // find user
+    const user = users.find((user) => user.id === Number(id));
+
+    if (user) {
+      // WRITE
+      const updatedUser = {
+        ...user,
+        ...requestBody,
+      };
+
+      const willUpdateUsers = users.map((user) => {
+        if (user.id === id) {
+          return updatedUser;
+        }
+        return user;
+      });
+
+      await writeUsers(willUpdateUsers);
+
+      // RESPONSE
+      res.status(200).json(updatedUser);
+    } else {
+      // RESPONSE
+      res.status(404).json({
+        message: "요청한 ID ${id} 사용자 정보를 찾을 수 없습니다..",
+      });
+    }
+  } catch (err: unknown) {
+    res.status(500).json({
+      message: "알 수 없는 오류가 발생했습니다.",
+    });
+  }
+};
 
 // DELETE ----------------------------------------------------------------------------------------------------
 
