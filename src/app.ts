@@ -13,6 +13,7 @@
 import "dotenv/config";
 import express from "express";
 import { resolve } from "node:path";
+import type User from "./types/user";
 import type { Express } from "express";
 import entryHandler from "./handlers/entry";
 import greetingMessage from "./middlewares/greetingMessage";
@@ -38,18 +39,53 @@ app.use(express.static(resolve(__dirname, "../public")));
 // --------------------------------------------------------------------------
 
 // GET, path: `/`, handler
-app.get("/", entryHandler);
+// app.get("/", entryHandler);
 
 // POST
-app.post("/", (req, res) => {
-  // 클라이언트의 요청 URL
-  console.log(req.url);
+// app.post("/", (req, res) => {
+//   // 클라이언트의 요청 URL
+//   console.log(req.url);
 
-  // 서버 -> 클라이언트 응답
-  res.status(201 /* Created */).send({
-    message: "POST 요청이 홈페이지로부터 주어졌습니다.",
-  });
+//   // 서버 -> 클라이언트 응답
+//   res.status(201 /* Created */).send({
+//     message: "POST 요청이 홈페이지로부터 주어졌습니다.",
+//   });
+// });
+
+/* Users API ------------------------------------------------------------------ */
+
+const dummyUser: User = {
+  id: 1,
+  name: "박하신",
+  gender: "여성",
+  age: 25,
+};
+
+const dummyUserList: User[] = [dummyUser];
+
+// CREATE (POST) -------------------------------------------------------
+
+// `POST /api/users`
+
+// READ (GET) ------------------------------------------------------------
+
+// `GET /api/users`
+app.get("/api/users", (req, res) => {
+  // response (to client)
+  res.status(200).json(dummyUserList);
 });
+
+// `GET /api/users/:id`
+
+// UPDATE (PUT / PATCH) -------------------------------------------------------
+
+// `PUT /api/users/:id`
+
+// `PATCH /api/users/:id`
+
+// DELETE (DELETE) -------------------------------------------------------
+
+// `DELETE /api/users/:id`
 
 /* Listening ------------------------------------------------------------------ */
 
