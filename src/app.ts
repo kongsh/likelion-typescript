@@ -13,10 +13,9 @@
 import "dotenv/config";
 import express from "express";
 import { resolve } from "node:path";
-import type User from "./types/user";
-import type { Express } from "express";
-import entryHandler from "./handlers/entry";
-import greetingMessage from "./middlewares/greetingMessage";
+import type { Express, Request } from "express";
+import User, { RequestUser } from "./types/user";
+import { readFile, writeFile } from "node:fs/promises";
 
 /* Application ------------------------------------------------------------------- */
 const app: Express = express();
@@ -27,8 +26,9 @@ const MESSAGE = `웹 서버 구동 http://${HOSTNAME}:${PORT}`;
 
 /* Middleware ------------------------------------------------------------------- */
 
-app.use(greetingMessage);
+// app.use(greetingMessage);
 app.use(express.static(resolve(__dirname, "../public")));
+app.use(express.json());
 
 /* Routing ------------------------------------------------------------------ */
 //
@@ -54,25 +54,36 @@ app.use(express.static(resolve(__dirname, "../public")));
 
 /* Users API ------------------------------------------------------------------ */
 
-const dummyUser: User = {
-  id: 1,
-  name: "박하신",
-  gender: "여성",
-  age: 25,
-};
-
-const dummyUserList: User[] = [dummyUser];
-
 // CREATE (POST) -------------------------------------------------------
-
 // `POST /api/users`
+app.post("/api/users", async (req: Request<{}, {}, RequestUser>, res) => {
+  // 클라이언트 요청(JSON) 받기
+  // console.log(req.body.gender);
+
+  // 서버에서 프로그래밍
+  // data/users.json 파일 읽기
+  // fsPromises.readFile()
+  const usersString = await readFile(resolve(__dirname, "./data/users.json"), { encoding: "utf-8" });
+
+  const usersJSON: User[] = JSON.parse(usersString);
+
+  console.log(typeof usersJSON);
+
+  // data/users.json 파일에 쓰기
+  // fsPromises.writeFile()
+
+  // 클라이언트에 응답
+  // 성공한 경우
+  res.status(201).json({});
+
+  // 실패한 경우
+});
 
 // READ (GET) ------------------------------------------------------------
-
 // `GET /api/users`
 app.get("/api/users", (req, res) => {
   // response (to client)
-  res.status(200).json(dummyUserList);
+  // res.status(200).json(dummyUserList);
 });
 
 // `GET /api/users/:id`

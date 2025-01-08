@@ -5,4 +5,6 @@ interface User {
   age: number;
 }
 
+export type RequestUser = Omit<User, "id">;
+
 export default User;
