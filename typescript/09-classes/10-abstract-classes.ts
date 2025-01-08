@@ -22,12 +22,17 @@
 
 {
   abstract class Employee {
-    constructor(public name: string, public age: number, public gender: "male" | "female") {}
+    constructor(
+      public name: string,
+      public age: number,
+      public gender: 'male' | 'female'
+    ) {}
 
     pay() {}
-
     greet() {}
   }
+
+  // const hy = new Employee('박해영', 22, 'female');
 
   class FulltimeEmployee extends Employee {}
 

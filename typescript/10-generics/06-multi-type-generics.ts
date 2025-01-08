@@ -14,14 +14,13 @@
     };
   }
 
-  combine<
-    {
-      type: string;
-    },
-    {
-      useCase: string[];
-    }
-  >({ type: "Generic" }, { useCase: ["일반적인 타입 선언", "호출 과정에서 설정하는 제네릭 타입"] });
+  combine<{ type: string }, { useCase: string[] }>(
+    { type: 'Generic' },
+    { useCase: ['일반적인 타입 선언', '호출 과정에서 설정하는 제네릭 타입'] }
+  );
 
-  combine<{ name: string; age: number }, { isLive: boolean; hasChildren: boolean }>({ name: "박해신", age: 77 }, { isLive: true, hasChildren: true });
+  combine<
+    { name: string; age: number },
+    { isLive: boolean; hasChildren: boolean }
+  >({ name: '박해신', age: 77 }, { isLive: true, hasChildren: true });
 }
