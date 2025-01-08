@@ -13,10 +13,8 @@
 import "dotenv/config";
 import express from "express";
 import { resolve } from "node:path";
-import type { Express, Request } from "express";
-import User, { RequestUser } from "./types/user";
-import { readFile, writeFile } from "node:fs/promises";
-import { readUsers, writeUsers } from "./lib/users";
+import type { Express } from "express";
+import usersRouter from "./routes/users";
 
 /* Application ------------------------------------------------------------------- */
 const app: Express = express();
@@ -53,95 +51,9 @@ app.use(express.json());
 //   });
 // });
 
-/* Users API ------------------------------------------------------------------ */
+/* API ------------------------------------------------------------------ */
 
-// CREATE (POST) -------------------------------------------------------
-// `POST /api/users`
-app.post("/api/users", async (req: Request<{}, {}, RequestUser>, res) => {
-  // 클라이언트 요청(JSON) 받기
-  // console.log(req.body.gender);
-
-  // 서버 프로그래밍
-  // 1. 데이터 파일 읽기
-  const users: User[] = await readUsers();
-
-  // 새롭게 생성될 사용자(User) 객체
-  // const newId = crypto.randomUUID();
-  const newId = users.length + 1;
-  const newUser: User = {
-    id: newId,
-    ...req.body,
-  };
-
-  // 2. 데이터 파일 쓰기
-  // 기존의 Users 배열에 새 Users 추가
-
-  try {
-    await writeUsers(newUser);
-
-    // 클라이언트에 응답
-    // 성공한 경우
-    res.status(201).json(newUser);
-  } catch (err: unknown) {
-    // 실패한 경우
-    res.status(401).json({
-      message: (err as Error).message,
-    });
-  }
-});
-
-// READ (GET) ------------------------------------------------------------
-
-// `GET /api/users`
-
-app.get("/api/users", async (req, res) => {
-  try {
-    const users = await readUsers();
-
-    res.status(200).json(users);
-  } catch (err: unknown) {
-    res.status(500).json({
-      message: "알 수 없는 오류가 발생했습니다.",
-    });
-  }
-});
-
-// `GET /api/users/:id`
-
-app.get("/api/users/:id", async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const users = await readUsers();
-
-    // 요청된 ID 값과 일치하는 사용자가 존재하는지 검토
-    const requestedUser = users.find((user) => user.id === Number(id));
-    if (requestedUser) {
-      // 요청한 사용자 정보가 있을 경우
-
-      res.status(200).json(requestedUser);
-    } else {
-      // 요청한 사용자 정보가 없을 경우
-      res.status(404).json({
-        message: "요청한 사용자 정보가 존재하지 않습니다.",
-      });
-    }
-  } catch (err: unknown) {
-    res.status(500).json({
-      message: "알 수 없는 오류가 발생했습니다.",
-    });
-  }
-});
-
-// UPDATE (PUT / PATCH) -------------------------------------------------------
-
-// `PUT /api/users/:id`
-
-// `PATCH /api/users/:id`
-
-// DELETE (DELETE) -------------------------------------------------------
-
-// `DELETE /api/users/:id`
+app.use("/api/users", usersRouter);
 
 /* Listening ------------------------------------------------------------------ */
 

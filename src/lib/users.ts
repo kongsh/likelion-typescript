@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import User from "../types/user";
+import { User } from "../types/user";
 
 const filePath: string = resolve(__dirname, "../data/users.json");
 

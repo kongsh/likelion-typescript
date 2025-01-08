@@ -1,4 +1,4 @@
-interface User {
+export interface User {
   id: number;
   name: string;
   gender: string;
@@ -6,5 +6,3 @@ interface User {
 }
 
 export type RequestUser = Omit<User, "id">;
-
-export default User;
